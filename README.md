@@ -96,7 +96,7 @@ Pre-Requisites: Linux
 Basically you need only "cmake" and "g++ 5", but in order to use GPIO mock-up
 kernel module you need a kernel 4.10 or above.
 
-Please look at those links:
+Please look at these links:
 
  - https://github.com/torvalds/linux/blob/v4.10/tools/testing/selftests/gpio/gpio-mockup.sh
  - https://github.com/torvalds/linux/blob/master/drivers/gpio/gpio-mockup.c
@@ -110,7 +110,7 @@ Build: Arduino
   - Create new Arduino sketch.
   - Give it any name you want (e.g. "deleteme").
   - Set as workspace folder the Rx folder.
-  - Setup hardware parameters.
+  - Setup Arduino hardware parameters.
   - Set "Default cpp file" project type.
   - Remove default files (e.g. "deleteme.*").
   - Try building all (CTRL+B).
@@ -122,41 +122,41 @@ Build: Arduino
 Build: Linux kernel module
 --------------------------
 
-By the "make <command-id>" command you can issue those commands:
+By the "make [command-id]" command you can issue these commands:
 
  - "all", "build" : build on generic linux distribution.
 
- - "chip-install-sources" : download kernel sources for C.H.I.P platform from
+ - "chip-install-sources": download kernel sources for C.H.I.P platform from
    https://github.com/NextThingCo/CHIP-linux/archive/debian/CHIP-linux-debian-4.4.13-ntc-mlc.zip .
 
- - "chip-build:" build on C.H.I.P. platform.
+ - "chip-build": build on C.H.I.P. platform.
 
- - "clean" : remove any building intermediate file.
+ - "clean": remove any building intermediate file.
 
- - "gdb" : debug kernel oops (look at comments inside Makefile).
+ - "gdb": debug kernel oops (look at comments inside Makefile).
 
- - "get-pin-number" : print currently configured GPIO PIN number.
+ - "get-pin-number": print currently configured GPIO PIN number.
 
- - "install" : load kernel module on generic linux distribution using the real
+ - "install": load kernel module on generic linux distribution using the real
    board hardware.
 
- - "install-mockup" : load kernel module on generic linux distribution using
+ - "install-mockup": load kernel module on generic linux distribution using
    the kernel GPIO mock-up driver in place of the real hardware.
 
- - "ls-mod" : check for a GPIO loaded kernel modules.
+ - "ls-mod": check for a GPIO loaded kernel modules.
 
- - "log-show" : print kernel log.
+ - "log-show": print kernel log.
 
- - "log-tail" : tail kernel log.
+ - "log-tail": tail kernel log.
 
- - "mod-info" : print kernel module information (if loaded by "install*").
+ - "mod-info": print kernel module information (if loaded by "install*").
 
- - "mod-probe" : probe kernel module information (if loaded by "install*").
+ - "mod-probe": probe kernel module information (if loaded by "install*").
 
- - "mod-rm-mockup" : unload the GPIO mock-up driver (if loaded).
+ - "mod-rm-mockup": unload the GPIO mock-up driver (if loaded).
 
- - "set-perf-debug-off", "set-perf-debug-on" : (de)activate logging of HR timers
-   performance/precision debugging information (look at kernel log to inspect).
+ - "set-perf-debug-off", "set-perf-debug-on": (de)activate logging of HR timers
+   performance/precision debugging information (look at kernel log).
 
  - "set-pin-number-1", "set-pin-number-2" : set GPIO pin to a value set by
    "pin-number-1" or "pin-number-2" variables.
@@ -166,17 +166,17 @@ By the "make <command-id>" command you can issue those commands:
  - "set-log-debug-level" : increase kernel log verbosity.
 
  - "setup-default", "setup-fast", "setup-medium", "setup-slow" : configure some
-   timing profiles (to be match with receiver setup).
+   timing profiles (to be matched with receiver setup).
 
  - "uninstall" : unload kernel module (real hardware).
 
- - "uninstall-mockup" : unload mock-up and GPIO-Wire kernel module.
+ - "uninstall-mockup" : unload mock-up and kernel module.
 
  - "write-no-crc" : ask a string to send to receiver without CRC (remember to
    disable CRC check on Rx) to debug without have to compile tester Tx.
 
 So, for example, to build the kernel module on your preferred linux distribution
-you could you thos commands:
+you could you issue these commands:
 
 - make build
 - make install-mockup
@@ -198,18 +198,18 @@ Build: Tx Tester
 Support
 -------
 
-Please use GitHub issue tracker, or write to antonio.petricca@gmail.com .
+Please use GitHub issue tracker.
 
 ------------
 Known issues
 ------------
 
-I have have extracted and organized my source code from a real hardware project.
+I have extracted and organized my source code from a real hardware project.
 
-In the above scenario it works perfectly.
+In the that scenario it works perfectly.
 
-Unfortunately I have no time to recompile this repository and try again so,
-please, inform me about any issue you may incur in.
+Unfortunately I have no time to test all the modules again so, please, inform me
+about any issue you may incur in.
 
 Thank you,
 Antonio

@@ -38,56 +38,60 @@ Project scope
 -------------
 
 Internet is full of open source projects which can transmit and receive data
-using cheap RF Tx/Rx 433/315 Mhz, but I cannot get any which can transmit data
-from a linux board and receive on Arduino using a reliable protocol, supporting
-a very precise timing (HR timers).
+using cheap RF TX/RX 433/315 Mhz, but I cannot get any which can transmit data
+from a linux board (non real time OS) and receive on Arduino using a reliable
+protocol, based upon a very precise timing (by HR timers).
 
 About HR timers I have published a test module available at:
 
   https://github.com/DareDevil73/hr-timers-tester
 
 As stated early, I have based my work on the assumptions and protocol designed
-by Roman Black.
+by Roman Black which test and implement a pulse with modulation binary protocol.
 
 In the beginning I wrote code to address C.H.I.P. board (https://getchip.com/),
 but it can be easily ported to other embedded platforms Raspberry like.
 
-------------
-Project tree
-------------
+I have improved the basic protocol by writing a linux kernel module:
 
-+ documents (Roman Black study)
-|
-- sources :
-  |
-  +- receiver (Rx software)
-  |  |
-  |  +- arduino (Arduino Rx C++  implementation)
-  |
-  +- transmitter (Tx software)
-     |
-     +- library (Client library classes)
-     |
-     +- module (Linux kernel module)
-     |
-     +- scripts (C.H.I.P. building scrits)
-     |
-     +- tester (Tx C++ demo application)
+ - available as chacter device, so writable like a file;
+ - based on High Resolution Timers to get precise RF edges timing (not
+   achievable by other sleeping techinques);
+ - fully customizable in terms of:
+   - number of virtual devices, one for each needed GPIO physical pin : set by
+     the "devicesNumber" module initialization parameter;
+   - protocol behaviour :
+     - "pinNumber"       : the GPIO physical pin number;
+     - "bitSyncCount"    : number of data byte synchronization bits count;
+     - "highStateEdge"   : high state edge duration (uS);
+     - "bitZeroDuration" : bit 0 duration (uS);
+     - "bitOneDuration"  : bit 1 duration (uS);
+     - "bitSyncDuration" : synchronization bit duration (uS).
+     - "swapOutput"      : invert/revert GPIO pin logic (some TX models need
+        different signal triggering edge);
+     - "perfDebug"       : write to kernel log edge performance information,
+       useful to debug timing issues;
+ - added an optional CRC16 (CRC-CCITT) to ensure message correctness;
 
------------------------
-Pre-Requisites: Arduino
------------------------
+This inequality must be satisfied:
 
-The Arduino project is a pure Arduino C++, so I suggest you to use the Sloeber
-IDE (Eclipse based) available at:
+  highStateEdge < bitZeroDuration < bitOneDuration < bitSyncDuration
 
-  http://eclipse.baeyens.it/
+The kernel module has been wrapped by a client class (CGPIOWire).
+
+On the receiver side I have added an automatic noise threshold to exclude false
+positives for very noisy RF devices.
 
 ------------------------
-Pre-Requisites: C.H.I.P.
+Project tree explanation
 ------------------------
 
-Basically you need only "cmake" and "g++ 5".
+- documents                   : Roman Black study.
+- sources/receiver/arduino    : Arduino RX C++ implementation.
+- sources/transmitter/library : Client library classes.
+- sources/transmitter/module  : Linux kernel module.
+- sources/transmitter/scripts : C.H.I.P. building scripts.
+- sources/transmitter/tester  : TX C++ demo application.
 
 ---------------------
 Pre-Requisites: Linux
@@ -101,26 +105,24 @@ Please look at these links:
  - https://github.com/torvalds/linux/blob/v4.10/tools/testing/selftests/gpio/gpio-mockup.sh
  - https://github.com/torvalds/linux/blob/master/drivers/gpio/gpio-mockup.c
 
---------------
-Build: Arduino
---------------
+----------------------------
+Pre-Requisites: Arduino (RX)
+----------------------------
 
-- Import Arduino project into Sloeber:
+The Arduino project is a pure Arduino C++, so I suggest you to use the Sloeber
+IDE (Eclipse based) available at:
 
-  - Create new Arduino sketch.
-  - Give it any name you want (e.g. "deleteme").
-  - Set as workspace folder the Rx folder.
-  - Setup Arduino hardware parameters.
-  - Set "Default cpp file" project type.
-  - Remove default files (e.g. "deleteme.*").
-  - Try building all (CTRL+B).
+  http://eclipse.baeyens.it/
 
-- Customize "Configuration.hpp" timing parameters to match the "tester" ones.
-- Build and Upload.
+------------------------
+Pre-Requisites: C.H.I.P.
+------------------------
 
---------------------------
-Build: Linux kernel module
---------------------------
+Basically you need only "cmake" and "g++ 5".
+
+-------------------------------
+Build: Linux kernel module (TX)
+-------------------------------
 
 By the "make [command-id]" command you can issue these commands:
 
@@ -173,7 +175,7 @@ By the "make [command-id]" command you can issue these commands:
  - "uninstall-mockup" : unload mock-up and kernel module.
 
  - "write-no-crc" : ask a string to send to receiver without CRC (remember to
-   disable CRC check on Rx) to debug without have to compile tester Tx.
+   disable CRC check on RX) to debug without have to compile tester TX.
 
 So, for example, to build the kernel module on your preferred linux distribution
 you could you issue these commands:
@@ -186,13 +188,30 @@ On your linux distribution you may not have then "gpio-mock.ko", so you have to
 download kernel sources and build it on your own following the standard kernel
 compiling process.
 
-----------------
-Build: Tx Tester
-----------------
+------------------
+Build: Tester (TX)
+------------------
 
 - ./clean
 - ./configure
 - ./build
+
+-------------------
+Build: Arduino (RX)
+-------------------
+
+- Import Arduino project into Sloeber:
+
+  - Create new Arduino sketch.
+  - Give it any name you want (e.g. "deleteme").
+  - Set as workspace folder the RX folder.
+  - Setup Arduino hardware parameters.
+  - Set "Default cpp file" project type.
+  - Remove default files (e.g. "deleteme.*").
+  - Try building all (CTRL+B).
+
+- Customize "Configuration.hpp" timing parameters to match the "tester" ones.
+- Build and Upload.
 
 -------
 Support

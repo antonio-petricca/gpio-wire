@@ -34,16 +34,16 @@ CGPIOWire::CGPIOWire(unsigned short uiDeviceNumber)
 }
 
 bool CGPIOWire::Configure(
-  unsigned long  ulPinNumber,
-  bool           bCanSleep,
-  bool           bSwapOutput,
-  unsigned long  ulSyncBitCount,
-  unsigned long  ulHighStateEdge,
-  unsigned long  ulBitZeroDuration,
-  unsigned long  ulBitOneDuration,
-  unsigned long  ulBitSyncDuration,
-  char           cSTX,
-  char           cETX
+  unsigned long ulPinNumber,
+  bool          bCanSleep,
+  bool          bSwapOutput,
+  unsigned long ulSyncBitCount,
+  unsigned long ulHighStateEdge,
+  unsigned long ulBitZeroDuration,
+  unsigned long ulBitOneDuration,
+  unsigned long ulBitSyncDuration,
+  char          cSTX,
+  char          cETX
 )
 {
   m_cETX = cETX;

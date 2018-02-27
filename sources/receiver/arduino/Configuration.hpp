@@ -32,10 +32,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #define DECODER_ETX          '\x03'
 #define DECODER_VALIDATE_CRC true
 
-#define LED_BLINK_TIMEOUT    500 * 1000 /* Microseconds */
-#define LED_FLASH_TIMEOUT    125        /* Milliseconds */
-#define LED_FLASH_COUNT      3
-
 /*
  * Configure logging levels on:
  *

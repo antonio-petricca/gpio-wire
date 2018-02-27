@@ -34,16 +34,16 @@ public:
   CGPIOWire(unsigned short uiDeviceNumber);
   
   bool Configure(
-    unsigned long  ulPinNumber,
-    bool           bCanSleep,
-    bool           bSwapOutput,
-    unsigned long  ulSyncBitCount,
-    unsigned long  ulHighStateEdge,
-    unsigned long  ulBitZeroDuration,
-    unsigned long  ulBitOneDuration,
-    unsigned long  ulBitSyncDuration,
-    char           cSTX = DEF_GPIO_ENCODER_STX,
-    char           cETX = DEF_GPIO_ENCODER_ETX
+    unsigned long ulPinNumber,
+    bool          bCanSleep,
+    bool          bSwapOutput,
+    unsigned long ulSyncBitCount,
+    unsigned long ulHighStateEdge,
+    unsigned long ulBitZeroDuration,
+    unsigned long ulBitOneDuration,
+    unsigned long ulBitSyncDuration,
+    char          cSTX = DEF_GPIO_ENCODER_STX,
+    char          cETX = DEF_GPIO_ENCODER_ETX
   );
 
   unsigned char* CreateMessage(

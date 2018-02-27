@@ -1,0 +1,5 @@
+obj-m  += gpiowire.o
+
+ifneq ($(TARGET),release)
+  ccflags-y += -g -DDEBUG
+endif

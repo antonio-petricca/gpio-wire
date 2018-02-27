@@ -1,0 +1,30 @@
+#!/bin/bash
+
+# https://getchip.com/
+# https://github.com/NextThingCo/CHIP-linux
+
+BUILD_DIR=$HOME/CHIP-linux-debian-4.4.13-ntc-mlc
+LKM_DIR=$1
+OUTPUT_DIR=drivers/custom
+
+if [ -d ${BUILD_DIR} ]; then
+	pushd $BUILD_DIR
+
+	mkdir -p $OUTPUT_DIR
+
+	cp $LKM_DIR/Makefile.chip $OUTPUT_DIR/Makefile
+	cp $LKM_DIR/*.h $OUTPUT_DIR
+	cp $LKM_DIR/*.c $OUTPUT_DIR
+
+	make SUBDIRS=$OUTPUT_DIR TARGET=$2
+
+	MOD_FILE=$(readlink -f $OUTPUT_DIR/*.ko)
+	OBJ_FILE=$(readlink -f $OUTPUT_DIR/*.o)
+	ls -l $MOD_FILE
+	cp $MOD_FILE $LKM_DIR/
+	cp $OBJ_FILE $LKM_DIR/
+
+	popd
+else
+	echo "C.H.I.P. kernel sources not yet installed!"
+fi

@@ -1,0 +1,8 @@
+# Sloeber/Eclipse exclusions
+
+.cproject
+.project
+.settings
+core
+libraries
+Release

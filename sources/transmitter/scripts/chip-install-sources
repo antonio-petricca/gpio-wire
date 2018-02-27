@@ -1,0 +1,32 @@
+#!/bin/bash
+
+# https://getchip.com/
+# https://github.com/NextThingCo/CHIP-linux
+
+DOWNLOAD_DIR=$HOME
+SOURCES_DIR=CHIP-linux-debian-4.4.13-ntc-mlc
+ZIP_FILE=4.4.13-ntc-mlc.zip
+
+if [ ! -d $DOWNLOAD_DIR ]; then
+	mkdir -p $DOWNLOAD_DIR || exit 1
+fi
+
+pushd $DOWNLOAD_DIR
+
+if [ ! -f $ZIP_FILE ]; then
+	wget https://github.com/NextThingCo/CHIP-linux/archive/debian/$ZIP_FILE || exit 1
+fi
+
+if [ ! -d $SOURCES_DIR ]; then
+	unzip $ZIP_FILE || exit 1
+
+	cd $SOURCES_DIR
+
+	sed -i -- 's/EXTRAVERSION =/EXTRAVERSION=-ntc-mlc/' Makefile
+	#make oldconfig
+  cp /boot/config-$(uname -r) .config
+	make prepare
+	make modules_prepare
+fi
+
+popd

@@ -71,7 +71,7 @@ I have improved the basic protocol by writing a linux kernel module:
         different signal triggering edge);
      - "perfDebug"       : write to kernel log edge performance information,
        useful to debug timing issues;
- - added an optional CRC16 (CRC-CCITT) to ensure message correctness;
+ - added an optional CRC16 (CRC-CCITT) to ensure message correctness.
 
 This inequality must be satisfied:
 

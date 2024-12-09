@@ -65,7 +65,14 @@ inline int gpio_set_pin(struct device_data* data, int value)
     value = (value ? 0 : 1);
   }
 
-  gpio_set_value(data->attr_pin_number, value); 
+  if (data->attr_can_sleep)
+  {
+    gpio_set_value_cansleep(data->attr_pin_number, value);
+  }
+  else
+  {
+    gpio_set_value(data->attr_pin_number, value); 
+  }
 
   return value;
 }
@@ -480,7 +487,7 @@ int file_open(struct inode *inodep, struct file *filep)
 
   sprintf(pinLabel, "pin %ud", data->attr_pin_number);
 
-  result = gpiod_request(data->attr_pin_number, pinLabel); 
+  result = gpio_request(data->attr_pin_number, pinLabel); 
 
   if (result < 0)
   {
@@ -492,7 +499,7 @@ int file_open(struct inode *inodep, struct file *filep)
    
   LOG_DEV(debug, "gpio pin %d successfully reserved.\n", data->attr_pin_number);
 
-  result = gpiod_export(data->attr_pin_number, false); 
+  result = gpio_export(data->attr_pin_number, false); 
 
   if (result < 0)
   {
@@ -504,7 +511,7 @@ int file_open(struct inode *inodep, struct file *filep)
    
   LOG_DEV(debug, "gpio pin %d successfully exported.\n", data->attr_pin_number);
 
-  result = gpiod_direction_output(data->attr_pin_number, data->attr_swap_output);
+  result = gpio_direction_output(data->attr_pin_number, data->attr_swap_output);
 
   if (result < 0)
   {
@@ -546,8 +553,8 @@ int file_release(struct inode *inodep, struct file *filep)
 
   if (data->attr_pin_number > 0)
   {
-    gpiod_unexport(data->attr_pin_number);
-    gpiod_free(data->attr_pin_number);
+    gpio_unexport(data->attr_pin_number);
+    gpio_free(data->attr_pin_number);
   }
 
   mutex_unlock(&data->mutex);

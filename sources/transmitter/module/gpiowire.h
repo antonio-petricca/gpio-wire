@@ -12,7 +12,7 @@
 
 #include <linux/device.h>  // Header to support the kernel Driver Model
 #include <linux/fs.h>      // Header for the Linux file system support
-#include <linux/gpio.h>    // Required for the GPIO functions
+#include <linux/gpio/consumer.h> // Required for the GPIO functions
 #include <linux/hrtimer.h> // High Resolution Timers
 #include <linux/init.h>    // Macros used to mark up functions __init __exit
 #include <linux/kernel.h>  // Contains types, macros, functions for the kernel
